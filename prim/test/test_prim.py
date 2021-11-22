@@ -27,6 +27,7 @@ from prim.prim_box import PrimBox
 from prim.prim_ops import get_quantile, categorical_peel, categorical_paste
 import numpy.lib.recfunctions as recfunctions
 
+
 class TestPrimInitMethod(unittest.TestCase):
     
     @classmethod
@@ -75,7 +76,8 @@ class TestPrimInitMethod(unittest.TestCase):
         output = str(box)
         
         self.assertEqual(output, TestPrimInitMethod.expected_output)
-        
+
+
 class TestPrimBox(unittest.TestCase):
     
     def test_init(self):
@@ -297,8 +299,8 @@ class TestPrimBox(unittest.TestCase):
         self.assertTrue(box_init['a'][1]==1.0)
         self.assertTrue(box_init['b'][0]==0)
         self.assertTrue(box_init['b'][1]==9)
-        self.assertTrue(box_init['c'][0]==set(['a','b']))
-        self.assertTrue(box_init['c'][1]==set(['a','b']))
+        self.assertTrue(box_init['c'][0]==set(['a', 'b']))
+        self.assertTrue(box_init['c'][1]==set(['a', 'b']))
         
     def test_categorical_peel(self):
         dtype = [('a', np.float),('b', np.object)]
@@ -310,19 +312,19 @@ class TestPrimBox(unittest.TestCase):
         y = y.astype(np.int)
         
         prim_obj = Prim(x, y, threshold=0.8)
-        box_lims = np.array([(0, set(['a','b'])),
-                             (1, set(['a','b']))], dtype=dtype )
+        box_lims = np.array([(0, set(['a', 'b'])),
+                             (1, set(['a', 'b']))], dtype=dtype )
         box = PrimBox(prim_obj, box_lims, prim_obj.yi)
         
         u = 'b'
         peels = categorical_peel(prim_obj, box, u)
         
-        self.assertEquals(len(peels), 2)
+        self.assertEqual(len(peels), 2)
         
         for peel in peels:
             pl  = peel[1][u]
-            self.assertEquals(len(pl[0]), 1)
-            self.assertEquals(len(pl[1]), 1)
+            self.assertEqual(len(pl[0]), 1)
+            self.assertEqual(len(pl[1]), 1)
         
 
     def test_categorical_paste(self):
@@ -345,10 +347,9 @@ class TestPrimBox(unittest.TestCase):
         u = 'b'
         pastes = categorical_paste(prim_obj, box, u)
         
-        self.assertEquals(len(pastes), 1)
+        self.assertEqual(len(pastes), 1)
         
         for paste in pastes:
             indices, box_lims = paste
-            self.assertEquals(indices.shape[0], 10)
-            self.assertEqual(box_lims[u][0], set(['a','b']))
-            
+            self.assertEqual(indices.shape[0], 10)
+            self.assertEqual(box_lims[u][0], set(['a', 'b']))
